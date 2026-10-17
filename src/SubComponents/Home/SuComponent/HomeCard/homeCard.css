@@ -1,0 +1,189 @@
+
+:root {
+  --home-bg: rgb(245, 245, 245);
+  --home-white: #ffffff;
+  --home-border: rgba(0, 0, 0, 0.07);
+  --home-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 14px rgba(0, 0, 0, 0.05);
+}
+.parent{
+  background-color: "red";
+  width: 100%;
+  height: 100%;
+}
+/* Top row: two fields at the same level */
+.home-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Card shared by all three main fields */
+/* Card shared by all three main fields */
+.home-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px;
+  box-sizing: border-box;
+  position: relative;
+  background: var(--home-white);
+  border: 1px solid var(--home-border);
+  border-radius: 18px;
+  box-shadow: var(--home-shadow);
+  cursor: text;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.home-card:focus-within {
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow:
+    0 0 0 3px rgba(0, 0, 0, 0.05),
+    0 4px 14px rgba(0, 0, 0, 0.06);
+}
+.home-label {
+  color: var(--home-black);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Plain inputs inside the cards (the card draws the border).
+   16px font stops iOS from zooming in on focus. */
+.home-input,
+.home-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+
+  color: var(--home-black);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.home-input::placeholder,
+.home-textarea::placeholder,
+.home-chip::placeholder {
+  color: #6b6b6b;
+}
+
+/* Wavy arrow */
+.home-arrow {
+  display: block;
+  width: 40px;
+  height: 84px;
+  margin: 8px auto;
+  flex-shrink: 0;
+}
+
+.home-arrow path {
+  fill: none;
+  stroke: var(--home-accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+
+.home-textarea {
+  min-height: 84px;
+  resize: none;
+}
+/* Go button */
+.buttonDiv{
+    width: 100%;
+    display: flex;
+ justify-content: flex-end;
+
+}
+.go-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: #ffffff;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.go-btn:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+}
+
+.go-btn:active {
+  transform: scale(0.96);
+}
+
+.go-btn:hover {
+  background: #374151;
+}
+
+.go-btn:active {
+  transform: scale(0.92);
+}
+
+.go-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 50%;
+
+  /* Optional: removed background since the main button is already dark and round */
+  background: transparent; 
+  font-size: 14px;
+  line-height: 1;
+}
+/* ------------------------------------------------------------
+   Phone: compact layout
+   ------------------------------------------------------------ */
+@media (max-width: 600px) {
+  .home {
+    padding: 12px;
+  }
+
+  /* stack the two top fields */
+  .home-top {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .home-card {
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+
+  .home-arrow {
+    width: 30px;
+    height: 56px;
+    margin: 4px auto;
+  }
+
+  .home-textarea {
+    min-height: 64px;
+  }
+
+ 
+
+  .home-go {
+    width: 100%;
+    padding: 12px 0;
+  }
+}
