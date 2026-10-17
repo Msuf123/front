@@ -102,11 +102,11 @@
   }
 
   .home-label {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .home-input,
   .home-textarea {
-    font-size: 13px;
+    font-size: 14px;
   }
 }
