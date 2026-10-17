@@ -10,22 +10,22 @@ import '@xyflow/react/dist/style.css';
 import './homeCard.css'
 import InputSuggestionBackend from './SubComponent/InputFiledSuggestion/InputSuggestion';
 const FormContext = createContext(null);
-
 /* Node 1 + 2: "Antibacterial medicine" / "Bacteria" */
 function FieldNode({ data }) {
   const { form, handleChange } = useContext(FormContext);
   const { name, label, placeholder } = data;
 
   return (
-    <label className="home-card">
+    /* Add 'nodrag' here so clicking/typing works properly */
+    <label className="home-card nodrag">
       <span className="home-label">{label}</span>
       <InputSuggestionBackend
-  name={name}
-  form={form}             
-  handleChange={handleChange}
-  placeholder={placeholder}
-  type="medicine"          
-/>
+        name={name}
+        form={form}             
+        handleChange={handleChange}
+        placeholder={placeholder}
+        type="medicine"          
+      />
       {/* edge starts here */}
       <Handle type="source" position={Position.Bottom} />
     </label>
@@ -37,7 +37,8 @@ function QueryNode() {
   const { form, handleChange, handleGo, logo } = useContext(FormContext);
 
   return (
-    <div className="home-card">
+    /* Add 'nodrag' here too */
+    <div className="home-card nodrag">
       {/* both edges end here */}
       <Handle type="target" position={Position.Top} />
 
@@ -64,7 +65,6 @@ function QueryNode() {
     </div>
   );
 }
-
 // must live OUTSIDE the component, otherwise React Flow remounts the nodes
 const nodeTypes = { field: FieldNode, query: QueryNode };
 
@@ -136,6 +136,7 @@ export default function HomeFlow({ form, handleChange, handleGo, logo }) {
           elementsSelectable={false}
           zoomOnScroll={false}       // don't hijack page scrolling
           preventScrolling={false}
+         
         />
       </div>
     </FormContext.Provider>

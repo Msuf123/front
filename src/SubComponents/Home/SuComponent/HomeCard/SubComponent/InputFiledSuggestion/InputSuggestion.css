@@ -11,6 +11,7 @@
   transform: translateY(-50%);
   font-size: 12px;
   color: #888;
+  z-index: 10;
 }
 
 .suggestion-list {

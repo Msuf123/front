@@ -15,8 +15,8 @@ const InputSuggestionBackend = ({
   placeholder = "Type to search...",
   type = "medicine",
 }) => {
-  const [suggestions, setSuggestions] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [suggestions, setSuggestions] = useState(['jkdka','kjafk',"ksk"]);
+  const [isOpen, setIsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const wrapperRef = useRef(null);
 
