@@ -8,6 +8,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import './homeCard.css'
+import InputSuggestionBackend from './SubComponent/InputFiledSuggestion/InputSuggestion';
 const FormContext = createContext(null);
 
 /* Node 1 + 2: "Antibacterial medicine" / "Bacteria" */
@@ -18,15 +19,13 @@ function FieldNode({ data }) {
   return (
     <label className="home-card">
       <span className="home-label">{label}</span>
-      <input
-        className="home-input nodrag"
-        type="text"
-        name={name}
-        value={form[name]}
-        onChange={handleChange}
-        placeholder={placeholder}
-        autoComplete="off"
-      />
+      <InputSuggestionBackend
+  name={name}
+  form={form}             
+  handleChange={handleChange}
+  placeholder={placeholder}
+  type="medicine"          
+/>
       {/* edge starts here */}
       <Handle type="source" position={Position.Bottom} />
     </label>
