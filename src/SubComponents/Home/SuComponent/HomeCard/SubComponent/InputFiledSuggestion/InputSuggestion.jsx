@@ -51,7 +51,7 @@ const InputSuggestionBackend = ({
   const fetchSuggestions = async (searchQuery) => {
     setLoading(true);
     try {
-      const response = await fetch("https://back3.scalcraft.com/getSuggestion", {
+      const response = await fetch("https://back3.scalcraft.com/data/getSuggestion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
