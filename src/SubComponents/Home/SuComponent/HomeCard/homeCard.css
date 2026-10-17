@@ -1,189 +1,112 @@
 
-:root {
-  --home-bg: rgb(245, 245, 245);
-  --home-white: #ffffff;
-  --home-border: rgba(0, 0, 0, 0.07);
-  --home-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 4px 14px rgba(0, 0, 0, 0.05);
-}
-.parent{
-  background-color: "red";
+.parent {
   width: 100%;
   height: 100%;
-}
-/* Top row: two fields at the same level */
-.home-top {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  min-height: 260px;
+  background: transparent;
 }
 
-/* Card shared by all three main fields */
-/* Card shared by all three main fields */
 .home-card {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px 18px;
+  gap: 3px;
+  padding: 7px 9px;
   box-sizing: border-box;
   position: relative;
-  background: var(--home-white);
-  border: 1px solid var(--home-border);
-  border-radius: 18px;
-  box-shadow: var(--home-shadow);
-  cursor: text;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-.home-card:focus-within {
-  border-color: rgba(0, 0, 0, 0.18);
-  box-shadow:
-    0 0 0 3px rgba(0, 0, 0, 0.05),
-    0 4px 14px rgba(0, 0, 0, 0.06);
-}
-.home-label {
-  color: var(--home-black);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 9px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
-/* Plain inputs inside the cards (the card draws the border).
-   16px font stops iOS from zooming in on focus. */
+.home-label {
+  color: #333;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
 .home-input,
 .home-textarea {
   width: 100%;
   box-sizing: border-box;
-  padding: 0;
+  padding: 2px 0;
   border: none;
   outline: none;
   background: transparent;
-
-  color: var(--home-black);
+  color: #222;
   font-family: inherit;
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.home-input {
+  min-height: 16px;
+}
+
+.home-textarea {
+  min-height: 48px;
+  height: 48px;
+  resize: none;
 }
 
 .home-input::placeholder,
-.home-textarea::placeholder,
-.home-chip::placeholder {
-  color: #6b6b6b;
+.home-textarea::placeholder {
+  color: #999;
+  font-size: 11px;
 }
 
-/* Wavy arrow */
-.home-arrow {
-  display: block;
-  width: 40px;
-  height: 84px;
-  margin: 8px auto;
-  flex-shrink: 0;
+.home-card:focus-within {
+  border-color: #c9c9c9;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.03);
 }
 
-.home-arrow path {
-  fill: none;
-  stroke: var(--home-accent);
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.buttonDiv {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
-
-
-.home-textarea {
-  min-height: 84px;
-  resize: none;
-}
-/* Go button */
-.buttonDiv{
-    width: 100%;
-    display: flex;
- justify-content: flex-end;
-
-}
 .go-btn {
-  width: 32px;
-  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 23px;
+  height: 23px;
   padding: 0;
   border: 1px solid #e5e7eb;
   border-radius: 50%;
-
-  background: #ffffff;
-  color: #ffffff;
-
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-
+  background: #fff;
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.go-btn:hover {
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
-}
-
-.go-btn:active {
-  transform: scale(0.96);
-}
-
-.go-btn:hover {
-  background: #374151;
-}
-
-.go-btn:active {
-  transform: scale(0.92);
 }
 
 .go-arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 50%;
   height: 50%;
-
-  /* Optional: removed background since the main button is already dark and round */
-  background: transparent; 
-  font-size: 14px;
-  line-height: 1;
+  object-fit: contain;
 }
-/* ------------------------------------------------------------
-   Phone: compact layout
-   ------------------------------------------------------------ */
+
+.react-flow__handle {
+  width: 5px;
+  height: 5px;
+  min-width: 5px;
+  min-height: 5px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
 @media (max-width: 600px) {
-  .home {
-    padding: 12px;
-  }
-
-  /* stack the two top fields */
-  .home-top {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
   .home-card {
-    padding: 12px 14px;
-    border-radius: 14px;
+    padding: 6px 8px;
+    border-radius: 8px;
   }
 
-  .home-arrow {
-    width: 30px;
-    height: 56px;
-    margin: 4px auto;
+  .home-label {
+    font-size: 9px;
   }
 
+  .home-input,
   .home-textarea {
-    min-height: 64px;
-  }
-
- 
-
-  .home-go {
-    width: 100%;
-    padding: 12px 0;
+    font-size: 12px;
   }
 }

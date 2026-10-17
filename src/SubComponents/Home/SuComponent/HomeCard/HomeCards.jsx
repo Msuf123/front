@@ -74,10 +74,10 @@ const nodeTypes = { field: FieldNode, query: QueryNode };
   - top cards: 280px wide each, 80px gap between them -> total width 640
   - bottom card: 520px wide, x = (640 - 520) / 2 = 60 -> centered under the two
 */
-const TOP_W = 280;
-const GAP = 80;
-const TOTAL_W = TOP_W * 2 + GAP; // 640
-const BOTTOM_W = 520;
+const TOP_W = 180;
+const GAP = 30;
+const TOTAL_W = TOP_W * 2 + GAP; // 390
+const BOTTOM_W = 300;
 
 const initialNodes = [
   {
