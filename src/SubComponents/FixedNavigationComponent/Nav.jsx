@@ -4,6 +4,7 @@ import "./nav.css";
 
 
 import "./nav.css";
+import WebSocketIndicator from "./SubComponent/Indicator";
 
 export default function FixedNav() {
   return (
@@ -21,7 +22,7 @@ export default function FixedNav() {
       </div>
 
       <div className="nav-status">
-        AI mode
+        <WebSocketIndicator></WebSocketIndicator>
       </div>
     </nav>
   );
