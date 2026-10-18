@@ -88,7 +88,7 @@ export default function Home() {
           result.message || "Unable to generate the report."
         );
       }
-      console.log(result)
+      console.log(result.data)
 
       // Save the report returned by your backend.
      setReportData(result.data);
@@ -103,7 +103,7 @@ export default function Home() {
       setLoading(false);
     }
   };
-useEffect(()=>{console.log("reprot  data")},[reportData])
+useEffect(()=>{console.log("reprot ",reportData)},[reportData])
   return (
     <div className="home">
       <div className="home-flow-panel">
