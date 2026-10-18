@@ -11,16 +11,6 @@ import './homeCard.css';
 import InputSuggestionBackend from './SubComponent/InputFiledSuggestion/InputSuggestion';
 import { useAtom } from 'jotai';
 import { antibiotics, organismName } from '../../../../Atoms/atoms';
-import { createContext, useContext } from "react";
-import {
-  Handle,
-  Position,
-  ReactFlow,
-  useNodesState,
-  useEdgesState,
-} from "@xyflow/react";
-
-import "@xyflow/react/dist/style.css";
 
 const FormContext = createContext(null);
 
