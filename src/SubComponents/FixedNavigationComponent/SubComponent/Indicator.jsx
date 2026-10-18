@@ -16,7 +16,7 @@ export default function WebSocketIndicator({ onNewDataAvailable }) {
 
   // Setters for updating state after the automatic API call
   const setReportData = useSetAtom(dataBack);
-  const setSplitTheScreen = useSetAtom(splitTheScreen);
+ 
 
   useEffect(() => {
     let ws;
