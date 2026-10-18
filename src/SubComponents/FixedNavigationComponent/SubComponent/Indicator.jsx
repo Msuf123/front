@@ -62,6 +62,9 @@ export default function WebSocketIndicator() {
           if (parsed.type === "welcome") {
             log("Server welcome", parsed.message);
           }
+          if (parsed.event === "NEW_DATA_AVAILABLE") {
+            alert(parsed.message || "New data is available!");
+          }
         } catch {
           log("Received non-JSON message");
         }

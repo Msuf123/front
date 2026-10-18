@@ -1,5 +1,5 @@
 import React from 'react';
-import './ResultTable.css'; // Add your custom styles or use Tailwind CSS
+import './ResultTable.css';
 
 export default function ResultTable({ report, onClose }) {
   if (!report) return null;

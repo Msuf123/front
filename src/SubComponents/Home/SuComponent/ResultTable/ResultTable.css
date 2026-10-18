@@ -1,191 +1,43 @@
-/* Overlay backdrop for the popup */
-.home-results-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.45);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(3px);
+/* Ensure modal card relative positioning */
+.home-results-panel {
+  position: relative;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-/* Popped-up card container */
-.home-results-panel.popup-card {
-  position: absolute;
-  background: #ffffff;
-  width: 90%;
-  max-width: 950px;
-  max-height: 85vh;
-  border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  animation: popupSlideIn 0.25s ease-out;
-}
-
-@keyframes popupSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
+/* Flexbox header layout to keep close button top-right */
 .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 20px 24px;
-  border-bottom: 1px solid #e2e8f0;
-  background-color: #f8fafc;
+  gap: 12px;
+  position: relative;
+  padding-right: 8px; /* Room for close button */
 }
 
-.header-titles h2 {
-  margin: 0 0 4px 0;
-  font-size: 1.25rem;
-  color: #1e293b;
+.header-titles {
+  flex: 1;
+  min-width: 0; /* Prevents long text from pushing button off-screen */
 }
 
-.subtitle {
-  margin: 0;
-  color: #64748b;
-  font-size: 0.9rem;
-}
-
+/* Ensure Close Button stays sticky/visible and easy to tap on mobile */
 .close-btn {
-  background: none;
+  background: transparent;
   border: none;
   font-size: 1.75rem;
-  color: #64748b;
-  cursor: pointer;
   line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  flex-shrink: 0; /* Prevents button from collapsing or disappearing */
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  color: #4a5568;
 }
 
 .close-btn:hover {
-  color: #0f172a;
-}
-
-.period-badges {
-  display: flex;
-  gap: 12px;
-  padding: 12px 24px;
-  background: #f1f5f9;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 0.85rem;
-  color: #334155;
-}
-
-.badge {
-  background: #ffffff;
-  padding: 4px 10px;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
-}
-
-.table-container {
-  padding: 20px 24px;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.table-container h3 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1rem;
-  color: #334155;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.9rem;
-}
-
-.data-table th, .data-table td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.data-table th {
-  background-color: #f8fafc;
-  color: #475569;
-  font-weight: 600;
-}
-
-.specimen-cell {
-  text-transform: capitalize;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.specimen-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.specimen-dot.blood { background-color: #ef4444; }
-.specimen-dot.urine { background-color: #3b82f6; }
-.specimen-dot.wound { background-color: #f59e0b; }
-
-.tag-partial {
-  font-size: 0.75rem;
-  background: #e2e8f0;
-  padding: 1px 5px;
-  border-radius: 4px;
-  color: #475569;
-  margin-left: 4px;
-}
-
-.progress-cell {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.mini-progress-bar {
-  width: 100px;
-  height: 6px;
-  background: #e2e8f0;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  border-radius: 3px;
-}
-
-.status-badge {
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-.status-badge.ok {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.panel-footer-notes {
-  padding: 12px 24px;
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-.panel-footer-notes blockquote {
-  margin: 0;
+  color: #1a202c;
 }
