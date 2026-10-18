@@ -4,6 +4,7 @@ import logo from "../../assets/up.png"
 import HomeFlow from "./SuComponent/HomeCard/HomeFlow";
 import { useAtom, useSetAtom } from "jotai";
 import { aiInputSearch, antibiotics, apiUrl, organismName, splitTheScreen } from "../../Atoms/atoms";
+import ResultTable from "./SuComponent/ResultTable/ReslutTable";
 
 export default function Home() {
   const setQueryAtom = useSetAtom(aiInputSearch);
@@ -89,7 +90,7 @@ export default function Home() {
       console.log(result)
 
       // Save the report returned by your backend.
-    //  setReportData(result.data);
+     setReportData(result.data);
 
       // Show the results panel only after successful submission.
       setSplitTheScreen(true);
