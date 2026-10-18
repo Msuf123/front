@@ -92,8 +92,7 @@ export default function Home() {
       // Save the report returned by your backend.
      setReportData(result.data);
 
-      // Show the results panel only after successful submission.
-      setSplitTheScreen(true);
+     
     } catch (err) {
       setError(
         err.message || "Unable to connect to the server."
@@ -124,7 +123,7 @@ export default function Home() {
 
       {reportData !== null && (
         <div className="home-results-panel">
-          <ResultTable data={reportData} />
+          <ResultTable report={reportData} />
         </div>
       )}
     </div>
