@@ -54,7 +54,7 @@ export default function Home() {
 
     const organism = form.organism.trim();
     const antibiotic = form.antibiotic.trim();
-
+    const query=form.query.trim();
     // Validate the required fields before making the request.
     if (!organism || !antibiotic) {
       setError(
@@ -76,6 +76,7 @@ export default function Home() {
         body: JSON.stringify({
           organism,
           antibiotic,
+          query
         }),
       });
 
