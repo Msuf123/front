@@ -41,8 +41,8 @@ export default function WebSocketIndicator({ onNewDataAvailable }) {
       }
 
       log("Triggering automatic API request due to NEW_DATA_AVAILABLE");
-      setSplitTheScreen(false);
-      setReportData(null);
+     
+      
 
       try {
         const response = await fetch(`${API_URL}data/testResult`, {
@@ -66,8 +66,9 @@ export default function WebSocketIndicator({ onNewDataAvailable }) {
         setReportData(result.data);
         log("Automatic report data successfully fetched and updated.");
       } catch (err) {
+        alert("error")
         console.error("Automatic fetch failed:", err.message);
-        setSplitTheScreen(false);
+       
       }
     };
 
