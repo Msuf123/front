@@ -46,7 +46,7 @@ const InputSuggestionBackend = ({
     try {
       // Updated endpoint to match backend route: /suggestions
       // Updated payload to send `field` and `query` as expected by req.body
-      const response = await fetch("https://back3.scalcraft.com/suggestions", {
+      const response = await fetch("https://back3.scalcraft.com/data/suggestions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
