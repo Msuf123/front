@@ -1,43 +1,384 @@
-/* Ensure modal card relative positioning */
+/* ==========================================================
+   ResultTable – Antimicrobial Susceptibility Report
+   ========================================================== */
+
+.home-results-overlay,
 .home-results-panel {
-  position: relative;
-  max-width: 100%;
-  box-sizing: border-box;
+  --rt-bg: #ffffff;
+  --rt-bg-soft: #f7f9fc;
+  --rt-border: #e5e9f0;
+  --rt-text: #1a202c;
+  --rt-text-muted: #64748b;
+  --rt-accent: #2563eb;
+  --rt-low: #16a34a;
+  --rt-mid: #d97706;
+  --rt-high: #dc2626;
+  --rt-radius: 16px;
+  --rt-shadow: 0 24px 60px -12px rgba(15, 23, 42, 0.35),
+               0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
-/* Flexbox header layout to keep close button top-right */
+@media (prefers-color-scheme: dark) {
+  .home-results-overlay,
+  .home-results-panel {
+    --rt-bg: #151a23;
+    --rt-bg-soft: #1c2230;
+    --rt-border: #2a3243;
+    --rt-text: #e8edf5;
+    --rt-text-muted: #93a1b8;
+    --rt-accent: #60a5fa;
+    --rt-low: #4ade80;
+    --rt-mid: #fbbf24;
+    --rt-high: #f87171;
+    --rt-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* ---------- Overlay ---------- */
+.home-results-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  overflow-y: auto;
+}
+
+/* ---------- Panel ---------- */
+.home-results-panel {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 28px 32px 24px;
+  background: var(--rt-bg);
+  color: var(--rt-text);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius);
+  box-shadow: var(--rt-shadow);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.animate-fade-in {
+  animation: rt-fade-in 0.22s ease-out;
+}
+
+@keyframes rt-fade-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in { animation: none; }
+}
+
+/* ---------- Header ---------- */
 .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
   position: relative;
-  padding-right: 8px; /* Room for close button */
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--rt-border);
 }
 
 .header-titles {
   flex: 1;
-  min-width: 0; /* Prevents long text from pushing button off-screen */
+  min-width: 0;
 }
 
-/* Ensure Close Button stays sticky/visible and easy to tap on mobile */
+.header-titles h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--rt-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.subtitle strong {
+  color: var(--rt-text);
+  font-weight: 600;
+}
+
 .close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.75rem;
-  line-height: 1;
-  cursor: pointer;
-  padding: 4px 8px;
-  flex-shrink: 0; /* Prevents button from collapsing or disappearing */
-  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 32px;
-  min-height: 32px;
-  color: #4a5568;
+  flex-shrink: 0;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  background: var(--rt-bg-soft);
+  border: 1px solid var(--rt-border);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--rt-text-muted);
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
 }
 
 .close-btn:hover {
-  color: #1a202c;
+  background: var(--rt-border);
+  color: var(--rt-text);
+}
+
+.close-btn:active {
+  transform: scale(0.94);
+}
+
+.close-btn:focus-visible {
+  outline: 2px solid var(--rt-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Period badges ---------- */
+.period-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--rt-bg-soft);
+  border: 1px solid var(--rt-border);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--rt-text-muted);
+}
+
+.badge strong {
+  color: var(--rt-text);
+  font-weight: 600;
+}
+
+/* ---------- Table ---------- */
+.table-container h3 {
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--rt-text-muted);
+}
+
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--rt-border);
+  border-radius: 12px;
+  padding: 14px 14px 4px;
+  background: var(--rt-bg);
+}
+
+.data-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table th {
+  position: sticky;
+  top: 0;
+  padding: 10px 12px;
+  background: var(--rt-bg-soft);
+  border-bottom: 1px solid var(--rt-border);
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--rt-text-muted);
+  white-space: nowrap;
+}
+
+.data-table th:first-child { border-top-left-radius: 8px; }
+.data-table th:last-child  { border-top-right-radius: 8px; }
+
+.data-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--rt-border);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background 0.12s;
+}
+
+.data-table tbody tr:hover {
+  background: var(--rt-bg-soft);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* numeric columns right-aligned */
+.data-table th:nth-child(3),
+.data-table th:nth-child(4),
+.data-table th:nth-child(5),
+.data-table td:nth-child(3),
+.data-table td:nth-child(4),
+.data-table td:nth-child(5) {
+  text-align: right;
+}
+
+/* ---------- Specimen cell ---------- */
+.specimen-cell {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.specimen-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #94a3b8; /* fallback */
+}
+
+.specimen-dot.blood  { background: #dc2626; }
+.specimen-dot.urine  { background: #eab308; }
+.specimen-dot.wound  { background: #a855f7; }
+.specimen-dot.sputum { background: #14b8a6; }
+.specimen-dot.csf    { background: #3b82f6; }
+
+/* ---------- Partial year ---------- */
+.partial-year td {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 8px,
+    rgba(148, 163, 184, 0.06) 8px 16px
+  );
+}
+
+.tag-partial {
+  margin-left: 4px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(217, 119, 6, 0.14);
+  color: var(--rt-mid);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Resistance progress ---------- */
+.progress-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+}
+
+.pct-text {
+  min-width: 52px;
+  font-size: 0.88rem;
+}
+
+.mini-progress-bar {
+  flex: 1;
+  height: 8px;
+  overflow: hidden;
+  background: var(--rt-border);
+  border-radius: 999px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--rt-low);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.progress-fill.level-mid  { background: var(--rt-mid); }
+.progress-fill.level-high { background: var(--rt-high); }
+
+/* ---------- Status badge ---------- */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.ok {
+  background: rgba(22, 163, 74, 0.13);
+  color: var(--rt-low);
+}
+
+.status-badge.partial {
+  background: rgba(217, 119, 6, 0.14);
+  color: var(--rt-mid);
+}
+
+/* ---------- Footer note ---------- */
+.panel-footer-notes {
+  margin-top: 18px;
+}
+
+.panel-footer-notes blockquote {
+  margin: 0;
+  padding: 12px 16px;
+  background: var(--rt-bg-soft);
+  border-left: 4px solid var(--rt-accent);
+  border-radius: 0 10px 10px 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--rt-text-muted);
+}
+
+.panel-footer-notes blockquote p {
+  margin: 0;
+}
+
+.panel-footer-notes blockquote strong {
+  color: var(--rt-text);
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+  .home-results-overlay {
+    padding: 0;
+    align-items: flex-end; /* bottom-sheet feel */
+  }
+
+  .home-results-panel {
+    max-height: 92vh;
+    padding: 20px 16px 20px;
+    border-radius: var(--rt-radius) var(--rt-radius) 0 0;
+  }
+
+  .header-titles h2 { font-size: 1.15rem; }
+
+  .table-container { padding: 10px 8px 2px; }
 }
