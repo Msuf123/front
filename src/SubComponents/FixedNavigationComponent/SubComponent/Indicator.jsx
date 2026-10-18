@@ -7,58 +7,97 @@ export default function WebSocketIndicator() {
   const [status, setStatus] = useState("Connecting");
 
   useEffect(() => {
-    let ws
-    let reconnectTimer
-    let heartbeatTimer
+    let ws;
+    let reconnectTimer;
+    let heartbeatTimer;
     let reconnectDelay = 3000;
     let disposed = false;
+
+    const log = (event, details = "") => {
+      console.log(
+        `[WebSocket ${new Date().toISOString()}] ${event}`,
+        details
+      );
+    };
 
     function connect() {
       if (disposed) return;
 
+      log("Connecting", SERVER_URL);
       setStatus("Connecting");
-      ws = new WebSocket(SERVER_URL);
+
+      try {
+        ws = new WebSocket(SERVER_URL);
+      } catch (error) {
+        log("Connection creation failed", error);
+        setStatus("Error");
+        scheduleReconnect();
+        return;
+      }
 
       ws.onopen = () => {
+        log("Connected", SERVER_URL);
         setStatus("Connected");
         reconnectDelay = 3000;
 
-        // Detect a connection that stops responding.
+        clearInterval(heartbeatTimer);
+
         heartbeatTimer = setInterval(() => {
           if (ws?.readyState !== WebSocket.OPEN) {
+            log("Heartbeat check failed: socket is not open");
             clearInterval(heartbeatTimer);
+            return;
           }
+
+          log("Heartbeat check: socket is open");
         }, 10000);
       };
 
       ws.onmessage = (event) => {
+        log("Message received", event.data);
+
         try {
           const parsed = JSON.parse(event.data);
 
           if (parsed.type === "welcome") {
-            console.log("[Server Notice]:", parsed.message);
+            log("Server welcome", parsed.message);
           }
         } catch {
-          // Ignore non-JSON messages.
+          log("Received non-JSON message");
         }
       };
 
-      ws.onerror = () => {
+      ws.onerror = (event) => {
+        log("Connection error", event);
         setStatus("Error");
       };
 
-      ws.onclose = () => {
+      ws.onclose = (event) => {
         clearInterval(heartbeatTimer);
+
+        log("Connection closed", {
+          code: event.code,
+          reason: event.reason || "(no reason provided)",
+          wasClean: event.wasClean,
+        });
 
         if (disposed) return;
 
         setStatus("Disconnected");
-
-        reconnectTimer = setTimeout(() => {
-          reconnectDelay = Math.min(reconnectDelay * 2, 30000);
-          connect();
-        }, reconnectDelay);
+        scheduleReconnect();
       };
+    }
+
+    function scheduleReconnect() {
+      if (disposed) return;
+
+      const delay = reconnectDelay;
+
+      log("Reconnecting scheduled", `${delay}ms`);
+      reconnectTimer = setTimeout(() => {
+        reconnectDelay = Math.min(reconnectDelay * 2, 30000);
+        connect();
+      }, delay);
     }
 
     connect();
@@ -67,7 +106,9 @@ export default function WebSocketIndicator() {
       disposed = true;
       clearTimeout(reconnectTimer);
       clearInterval(heartbeatTimer);
-      ws?.close();
+
+      log("Component unmounted; closing WebSocket");
+      ws?.close(1000, "Component unmounted");
     };
   }, []);
 
