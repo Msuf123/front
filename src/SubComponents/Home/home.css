@@ -18,9 +18,7 @@
   width: 100%;
 }
 
-.home-results-panel {
-  display: none;
-}
+
 
 /* Enable the split screen on desktop only */
 @media (min-width: 768px) {

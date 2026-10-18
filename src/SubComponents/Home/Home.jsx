@@ -5,7 +5,48 @@ import HomeFlow from "./SuComponent/HomeCard/HomeFlow";
 import { useAtom, useSetAtom } from "jotai";
 import { aiInputSearch, antibiotics, apiUrl, organismName, splitTheScreen } from "../../Atoms/atoms";
 import ResultTable from "./SuComponent/ResultTable/ReslutTable";
+const specimens = ["blood", "urine", "sputum", "wound"];
 
+const generateRandomRow = (year, partialYear = false) => {
+  const tested = Math.floor(Math.random() * 300) + 50;
+  const resistant = Math.floor(Math.random() * (tested + 1));
+  const susceptible = tested - resistant;
+  const resistancePct = Math.round((resistant / tested) * 100);
+
+  return {
+    specimen: specimens[Math.floor(Math.random() * specimens.length)],
+    year,
+    tested,
+    resistant,
+    susceptible,
+    resistancePct,
+    display: `${resistancePct}%`,
+    partialYear,
+  };
+};
+
+const reportDatas = {
+  query: {
+    organism: "Escherichia coli",
+    antibiotic: "Ciprofloxacin",
+  },
+  periods: {
+    last4Weeks: {
+      from: "2026-09-20",
+      to: "2026-10-18",
+    },
+    annual: {
+      from: "2022-01-01",
+      to: "2026-10-18",
+    },
+  },
+  trend: Array.from({ length: 12 }, (_, index) =>
+    generateRandomRow(2021 + Math.floor(index / 2), index === 11)
+  ),
+  notes: [
+    "This is randomly generated demonstration data and does not represent actual laboratory results.",
+  ],
+};
 export default function Home() {
   const setQueryAtom = useSetAtom(aiInputSearch);
   const setOrganismAtom = useSetAtom(organismName);
@@ -117,18 +158,13 @@ useEffect(()=>{console.log("reprot ",reportData)},[reportData])
           loading={loading}
         />
 
-        {error && (
-          <p className="home-error" role="alert">
-            {error}
-          </p>
-        )}
       </div>
 
-      {reportData !== null && (
-        <div className="home-results-panel">
+      {reportData!==null?<div className="home-results-panel">
           <ResultTable report={reportData} />
-        </div>
-      )}
+        </div>:null}
+        
+     
     </div>
   );
 }
