@@ -161,7 +161,7 @@ useEffect(()=>{console.log("reprot ",reportData)},[reportData])
       </div>
 
       {reportData!==null?<div className="home-results-panel">
-          <ResultTable report={reportData} />
+          <ResultTable report={reportData} onClose={() => setReportData(null)}/>
         </div>:null}
         
      
