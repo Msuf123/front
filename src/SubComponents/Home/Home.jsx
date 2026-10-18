@@ -3,7 +3,7 @@ import "./home.css";
 import logo from "../../assets/up.png"
 import HomeFlow from "./SuComponent/HomeCard/HomeFlow";
 import { useAtom, useSetAtom } from "jotai";
-import { aiInputSearch, antibiotics, apiUrl, organismName, splitTheScreen } from "../../Atoms/atoms";
+import { aiInputSearch, antibiotics, apiUrl, dataBack, organismName, splitTheScreen } from "../../Atoms/atoms";
 import ResultTable from "./SuComponent/ResultTable/ReslutTable";
 const specimens = ["blood", "urine", "sputum", "wound"];
 
@@ -60,7 +60,7 @@ export default function Home() {
     antibiotic: "",
   });
 
-  const [reportData, setReportData] = useState(null);
+  const [reportData, setReportData] = useAtom(dataBack);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const handleChange = (event) => {
