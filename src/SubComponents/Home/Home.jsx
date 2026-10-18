@@ -67,7 +67,7 @@ export default function Home() {
     setReportData(null);
 
     try {
-      const response = await fetch(`${API_URL}/data/testResult`, {
+      const response = await fetch(`${API_URL}data/testResult`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
