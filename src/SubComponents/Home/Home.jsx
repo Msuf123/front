@@ -86,9 +86,10 @@ export default function Home() {
           result.message || "Unable to generate the report."
         );
       }
+      console.log(result)
 
       // Save the report returned by your backend.
-      setReportData(result.data);
+    //  setReportData(result.data);
 
       // Show the results panel only after successful submission.
       setSplitTheScreen(true);
