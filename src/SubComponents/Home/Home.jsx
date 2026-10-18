@@ -105,7 +105,7 @@ export default function Home() {
     }
 
     setLoading(true);
-    setSplitTheScreen(false);
+   
     setReportData(null);
 
     try {
@@ -134,6 +134,7 @@ console.log("keys:", Object.keys(result));
 console.log("data keys:", result.data && Object.keys(result.data));
 console.log("summary is array:", Array.isArray(result.data?.summary));
       // Save the report returned by your backend.
+      console.log("Setting  data ",result.data)
      setReportData(result.data);
 
      
