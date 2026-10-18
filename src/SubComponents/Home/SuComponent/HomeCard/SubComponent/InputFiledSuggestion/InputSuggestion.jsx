@@ -118,5 +118,4 @@ const InputSuggestionBackend = ({
   );
 };
 
-exports = InputSuggestionBackend;
 export default InputSuggestionBackend;
