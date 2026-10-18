@@ -111,6 +111,7 @@ export default function WebSocketIndicator({ onNewDataAvailable }) {
           }
 
           if (parsed.event === "NEW_DATA_AVAILABLE") {
+            setReportData(null)
             // Automatically make the API request instead of showing an alert
             triggerFetch();
           }
