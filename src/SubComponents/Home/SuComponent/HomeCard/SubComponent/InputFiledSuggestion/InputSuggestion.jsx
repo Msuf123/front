@@ -1,22 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./InputSuggestion.css"; // Optional custom styling
+import "./InputSuggestion.css";
 
-/**
- * @param {string} name - Name attribute for form state key
- * @param {object} form - Parent form state object
- * @param {function} handleChange - Callback function to update parent state e.g., onChange(e)
- * @param {string} placeholder - Input placeholder text
- * @param {string} type - 'medicine' | 'backteria'
- */
 const InputSuggestionBackend = ({
   name,
   form,
   handleChange,
   placeholder = "Type to search...",
-  type = "medicine",
+  type = "antibiotic", // matches backend fields: 'antibiotic' or 'organism'
 }) => {
-  const [suggestions, setSuggestions] = useState(['jkdka','kjafk',"ksk"]);
-  const [isOpen, setIsOpen] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const wrapperRef = useRef(null);
 
@@ -51,21 +44,30 @@ const InputSuggestionBackend = ({
   const fetchSuggestions = async (searchQuery) => {
     setLoading(true);
     try {
-      const response = await fetch("https://back3.scalcraft.com/data/getSuggestion", {
+      // Updated endpoint to match backend route: /suggestions
+      // Updated payload to send `field` and `query` as expected by req.body
+      const response = await fetch("https://back3.scalcraft.com/suggestions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          query: searchQuery,
-          type: type, // 'medicine' or 'backteria'
+          field: type, // Matches req.body.field ("antibiotic" or "organism")
+          query: searchQuery, // Matches req.body.query
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        setSuggestions(data.suggestions || []);
-        setIsOpen(data.suggestions && data.suggestions.length > 0);
+        
+        // Matches backend response format: { success: true, field, count, suggestions }
+        const rawList = data.suggestions || [];
+        const formattedList = rawList.map((item) => 
+          typeof item === "object" && item !== null ? item.name || Object.values(item)[0] : item
+        );
+
+        setSuggestions(formattedList);
+        setIsOpen(formattedList.length > 0);
       }
     } catch (error) {
       console.error("Failed to fetch suggestions from backend:", error);
@@ -74,9 +76,7 @@ const InputSuggestionBackend = ({
     }
   };
 
-  // Select item from suggestions list
   const handleSelectSuggestion = (value) => {
-    // Create a synthetic event object to maintain compatibility with standard handleChange handlers
     const syntheticEvent = {
       target: {
         name: name,
@@ -88,24 +88,21 @@ const InputSuggestionBackend = ({
   };
 
   return (
-    <div className="input-suggestion-container" ref={wrapperRef}>
+    <div className="input-suggestion-container nodrag" ref={wrapperRef}>
       <input
-        className="home-input nodrag"
         type="text"
+        className="home-input nodrag"
         name={name}
         value={inputValue}
         onChange={handleChange}
-        onFocus={() => {
-          if (suggestions.length > 0) setIsOpen(true);
-        }}
         placeholder={placeholder}
         autoComplete="off"
       />
 
-      {loading && <div className="suggestion-loader">Loading...</div>}
+      {loading && <span className="suggestion-loader">Loading...</span>}
 
       {isOpen && suggestions.length > 0 && (
-        <ul className="suggestion-list">
+        <ul className="suggestion-list nodrag">
           {suggestions.map((item, index) => (
             <li
               key={index}
@@ -121,4 +118,5 @@ const InputSuggestionBackend = ({
   );
 };
 
+exports = InputSuggestionBackend;
 export default InputSuggestionBackend;
