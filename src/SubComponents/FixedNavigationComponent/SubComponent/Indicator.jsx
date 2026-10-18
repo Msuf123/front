@@ -1,67 +1,102 @@
-import React, { useEffect, useRef, useState } from "react";
+
+import React, { useEffect, useState } from "react";
 
 const SERVER_URL = "wss://back3.scalcraft.com/";
 
 export default function WebSocketIndicator() {
   const [status, setStatus] = useState("Connecting");
-  const wsRef = useRef(null);
 
   useEffect(() => {
-    const ws = new WebSocket(SERVER_URL);
-    wsRef.current = ws;
+    let ws
+    let reconnectTimer
+    let heartbeatTimer
+    let reconnectDelay = 3000;
+    let disposed = false;
 
-    ws.onopen = () => {
-      setStatus("Connected");
-    };
+    function connect() {
+      if (disposed) return;
 
-    ws.onmessage = (event) => {
-      try {
-        const parsed = JSON.parse(event.data);
-        if (parsed.type === "welcome") {
-          console.log("[Server Notice]:", parsed.message);
+      setStatus("Connecting");
+      ws = new WebSocket(SERVER_URL);
+
+      ws.onopen = () => {
+        setStatus("Connected");
+        reconnectDelay = 3000;
+
+        // Detect a connection that stops responding.
+        heartbeatTimer = setInterval(() => {
+          if (ws?.readyState !== WebSocket.OPEN) {
+            clearInterval(heartbeatTimer);
+          }
+        }, 10000);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const parsed = JSON.parse(event.data);
+
+          if (parsed.type === "welcome") {
+            console.log("[Server Notice]:", parsed.message);
+          }
+        } catch {
+          // Ignore non-JSON messages.
         }
-      } catch (err) {
-        // Non-JSON message handler if needed
-      }
-    };
+      };
 
-    ws.onerror = () => {
-      setStatus("Error");
-    };
+      ws.onerror = () => {
+        setStatus("Error");
+      };
 
-    ws.onclose = () => {
-      setStatus("Disconnected");
-    };
+      ws.onclose = () => {
+        clearInterval(heartbeatTimer);
+
+        if (disposed) return;
+
+        setStatus("Disconnected");
+
+        reconnectTimer = setTimeout(() => {
+          reconnectDelay = Math.min(reconnectDelay * 2, 30000);
+          connect();
+        }, reconnectDelay);
+      };
+    }
+
+    connect();
 
     return () => {
-      ws.close();
+      disposed = true;
+      clearTimeout(reconnectTimer);
+      clearInterval(heartbeatTimer);
+      ws?.close();
     };
   }, []);
 
-  // Helper for status dot color
-  const getStatusColor = () => {
-    switch (status) {
-      case "Connected":
-        return "#22c55e"; // Green
-      case "Connecting":
-        return "#eab308"; // Yellow/Amber
-      case "Error":
-        return "#ef4444"; // Red
-      default:
-        return "#6b7280"; // Gray
-    }
-  };
+  const color =
+    status === "Connected"
+      ? "#22c55e"
+      : status === "Connecting"
+        ? "#eab308"
+        : status === "Error"
+          ? "#ef4444"
+          : "#6b7280";
 
   return (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", fontFamily: "sans-serif", fontSize: "14px" }}>
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        fontFamily: "sans-serif",
+        fontSize: 14,
+      }}
+    >
       <span
         style={{
-          width: "10px",
-          height: "10px",
+          width: 10,
+          height: 10,
           borderRadius: "50%",
-          backgroundColor: getStatusColor(),
+          backgroundColor: color,
           display: "inline-block",
-          boxShadow: "0 0 4px rgba(0,0,0,0.1)",
         }}
       />
       <span>

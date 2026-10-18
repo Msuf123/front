@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./home.css";
 import logo from "../../assets/up.png"
 import HomeFlow from "./SuComponent/HomeCard/HomeFlow";
@@ -102,7 +102,7 @@ export default function Home() {
       setLoading(false);
     }
   };
-
+useEffect(()=>{console.log("reprot  data")},[reportData])
   return (
     <div className="home">
       <div className="home-flow-panel">
